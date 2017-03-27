@@ -1,14 +1,9 @@
 ---
 title: "Mini-Project 2"
-author: "Your Name Here"
-date: "March 24, 2017"
+author: "Misha Ritoch and Megan Pak"
+date: "March 26, 2017"
 output: html_document
 ---
-
-
-## Loading the data
-
-This project is so interesting and relevant to my life!
 
 ```{r, include=FALSE}
 load("house_elections.rda")
@@ -16,4 +11,64 @@ load("candidates.rda")
 load("committees.rda")
 load("contributions.rda")
 ```
-Change this file 
+
+The 2012 election was estimated to cost over $6 billion, going down in history as the most expensive election at the time. With data from the Federal Election Commission, our group aimed to determine which states received more money during the 2012 presidential election, specifically for Democrats and Republicans.  We used two different data sets from the FEC--”candidates” and “contributions”--to create a two sets of bar plots, first to analyze total donation contributions across all 50 states and then to analyze the top two states with the highest donation contributions. 
+
+
+```{r, warning=FALSE, message=FALSE}
+library(dplyr) 
+library(tidyr) 
+candidates %>%
+  group_by(cand_state)
+contr_data <- contributions %>% inner_join(candidates, by = "cand_id")
+```
+
+```{r, warning=FALSE, message=FALSE}
+party_money <- contr_data %>%
+  group_by(cand_state, cand_party_affiliation) %>%
+  summarize(
+    N=n(), total = sum(transaction_amt)) %>%
+  filter(cand_party_affiliation %in% c("REP", "DEM"))
+```
+
+```{r, warning=FALSE, message=FALSE}
+party_money %>%
+  arrange(desc(total))
+```
+
+```{r, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(ggthemes)
+ggplot(party_money, aes(x=cand_party_affiliation, y=total)) + 
+                 geom_bar(stat="identity", aes(color = cand_party_affiliation, fill=cand_party_affiliation)) +
+  facet_wrap(~cand_state, ncol = 10) + 
+  scale_y_continuous(labels = scales::comma) +
+scale_fill_manual(values = c("DEM" = "#0000FF", "REP" = "#FF0000")) +
+scale_color_manual(values = c("DEM" = "#0000FF", "REP" = "#FF0000")) +
+  theme_few() +
+  xlab("Party ID") + 
+  ylab("Total Contribution ($)") + 
+  ggtitle("Figure 1. Total Contributions for all 50 States in 2012 Election")
+```
+
+After joining the "candidates" and "contributions" data sets, we were able to create barplots with the contributions made to Democrats and Republicans for each state. From Figure 1., it is clear that the states with the highest number of donation contributions include Massachusetts (MA) and Illinois (IL), home state to the 2012 presidential nominees, Mitt Romney and Barack Obama. After Massachusetts and Illinois, California, Texas and New York ranked among the next largest contributors to the presidential campaign. This is probably indicative of top donors living in large cities. California and New York are predominantly Democrat with Texas generally identifying at Republican, which is also evident in Figure 1. Additionally, it is also interesting to see that typical swing states were among the states with some of the highest donation contributions. These states included Florida, Virginia, Ohio, Pennsylvania, and Wisconsin. 
+
+```{r, warning=FALSE, message=FALSE}
+MAIL <- party_money %>% 
+  filter(cand_state %in% c("MA", "IL"))
+```
+
+```{r, warning=FALSE, message=FALSE}
+ggplot(MAIL, aes(x=cand_party_affiliation, y=total)) + 
+                 geom_bar(stat="identity", aes(color = cand_party_affiliation, fill=cand_party_affiliation)) +
+  facet_wrap(~cand_state, ncol = 2) + 
+  scale_y_continuous(labels = scales::comma) +
+  scale_fill_manual(values = c("DEM" = "#0000FF", "REP" = "#FF0000")) +
+  scale_color_manual(values = c("DEM" = "#0000FF", "REP" = "#FF0000")) +
+  theme_few() +
+  xlab("Party ID") + 
+  ylab("Total Contribution ($)") + 
+  ggtitle("Figure 2. Massachusetts and Illinois Contribution, ELection 2012")
+```
+
+Figure 2 looks at Massachusetts and Illinois, which had the highest donation contributions. Looking at them side allows us to visually compare the two home states for Obama and Romney. In Illinois, the total contribution towards the Democratic Party was roughly $429,046,963. Conversely, Massachusetts contributed roughly $199,441,933 towards the Republican Party. 
