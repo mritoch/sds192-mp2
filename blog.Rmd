@@ -49,12 +49,12 @@ scale_fill_manual(values = c("DEM" = "#0000FF", "REP" = "#FF0000")) +
 scale_color_manual(values = c("DEM" = "#0000FF", "REP" = "#FF0000")) +
   theme_few() +
   xlab("Party ID") + 
-  ylab("Total Contribution ($)") + 
-  ggtitle("Figure 1. Total Contributions for all 50 States in 2012 Election")
+  ylab("Total Contributions ($)") + 
+  ggtitle("Figure 1. Total Contributions for all 50 States, 2012 Election")
 ```
 
 
-After joining the "candidates" and "contributions" data sets, we were able to create barplots with the contributions made to Democrats and Republicans for each state. From Figure 1, it is clear that the states with the highest number of donation contributions include Massachusetts (MA) and Illinois (IL), home state to the 2012 presidential nominees, Mitt Romney and Barack Obama. After Massachusetts and Illinois, California, Texas and New York ranked among the next largest contributors to the presidential campaign. This is probably indicative of top donors living in large cities. California and New York are predominantly Democrat with Texas generally identifying at Republican, which is also evident in Figure 1. Additionally, it is also interesting to see that typical swing states were among the states with some of the highest donation contributions. These states included Florida, Virginia, Ohio, Pennsylvania, and Wisconsin. 
+After joining the "candidates" and "contributions" data sets, we were able to create barplots with the contributions made to Democrats and Republicans for each state. From Figure 1, it is clear that the states with the highest number of donation contributions include Massachusetts (MA) and Illinois (IL), home state to the 2012 presidential nominees, Mitt Romney and Barack Obama. After Massachusetts and Illinois, California, Texas and New York ranked among the next largest contributors to the presidential campaign. This is probably indicative of top donors living in large cities. California and New York are predominantly Democratic with Texas generally identifying as Republican, which is also evident in Figure 1. Additionally, it is interesting to see that typical swing states were among the states with some of the largest donation contributions. These states included Florida, Virginia, Ohio, Pennsylvania, and Wisconsin. 
 
 
 
@@ -72,7 +72,7 @@ ggplot(MAIL, aes(x=cand_party_affiliation, y=total)) +
   scale_color_manual(values = c("DEM" = "#0000FF", "REP" = "#FF0000")) +
   theme_few() +
   xlab("Party ID") + 
-  ylab("Total Contribution ($)") + 
+  ylab("Total Contributions ($)") + 
   ggtitle("Figure 2. Massachusetts and Illinois Contribution, ELection 2012")
 ```
 
